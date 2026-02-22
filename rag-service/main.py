@@ -141,8 +141,11 @@ def process_pdf(data: PDFPath):
         
         vectorstore = FAISS.from_documents(chunks, embedding_model)
         qa_chain = True
+        
+        # Generate doc_id from filename
+        doc_id = os.path.basename(data.filePath)
 
-        return {"message": "PDF processed successfully"}
+        return {"message": "PDF processed successfully", "doc_id": doc_id}
     
     except HTTPException:
         raise

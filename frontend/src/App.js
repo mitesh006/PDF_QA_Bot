@@ -48,7 +48,7 @@ function App() {
     const formData = new FormData();
     formData.append("file", file);
     try {
-      await axios.post(`${API_BASE}/upload`, formData);
+      const response = await axios.post(`${API_BASE}/upload`, formData);
       const url = URL.createObjectURL(file);
       setPdfs(prev => [...prev, { name: file.name, url, chat: [] }]);
       setSelectedPdf(file.name);

@@ -50,7 +50,7 @@ app.post("/upload", uploadLimiter, upload.single("file"), async (req, res) => {
 
     // Validate file type
     if (req.file.mimetype !== "application/pdf") {
-      fs.unlinkSync(req.file.path); // Clean up uploaded file
+      fs.unlinkSync(req.file.path);
       return res.status(400).json({ error: "Invalid file type. Only PDF files are allowed." });
     }
 
@@ -71,11 +71,11 @@ app.post("/upload", uploadLimiter, upload.single("file"), async (req, res) => {
     const filePath = path.join(__dirname, req.file.path);
 
     // Send PDF to Python service
-    await axios.post("http://localhost:5000/process-pdf", {
+    const response = await axios.post("http://localhost:5000/process-pdf", {
       filePath: filePath,
     });
 
-    res.json({ message: "PDF uploaded & processed successfully!" });
+    res.json({ message: "PDF uploaded & processed successfully!", doc_id: response.data.doc_id });
   } catch (err) {
     // Clean up file if it exists
     if (req.file?.path && fs.existsSync(req.file.path)) {
@@ -88,7 +88,7 @@ app.post("/upload", uploadLimiter, upload.single("file"), async (req, res) => {
     
     const details = err.response?.data?.detail || err.response?.data?.error || err.message;
     console.error("Upload processing failed:", details);
-    res.status(500).json({ error: "PDF processing failed", details });
+    return res.status(500).json({ error: "PDF processing failed", details });
   }
 });
 
