@@ -7,8 +7,7 @@ const path = require("path");
 const rateLimit = require("express-rate-limit");
 
 const app = express();
-app.set('trust proxy', 1);
-app.use(globalLimiter);
+app.set("trust proxy", 1);
 app.use(cors());
 app.set('trust proxy', 1); // Fix ERR_ERL_UNEXPECTED_X_FORWARDED_FOR
 app.use(express.json());
