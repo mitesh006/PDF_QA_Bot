@@ -10,6 +10,7 @@ const app = express();
 app.set('trust proxy', 1);
 app.use(globalLimiter);
 app.use(cors());
+app.set('trust proxy', 1); // Fix ERR_ERL_UNEXPECTED_X_FORWARDED_FOR
 app.use(express.json());
 
 // Rate limiting middleware
